@@ -15,15 +15,15 @@ pipeline {
             steps { checkout scm }
         }
 
-        stage('Test') {
-            steps {
-                sh 'docker run --rm $DOCKER_IMAGE:$BUILD_NUMBER python -m pytest tests/ -v'
-            }
-        }
-
         stage('Build Docker Image') {
             steps {
                 sh 'docker build -t $DOCKER_IMAGE:$BUILD_NUMBER -f deployment/Dockerfile deployment'
+            }
+        }
+        
+        stage('Test') {
+            steps {
+                sh 'docker run --rm $DOCKER_IMAGE:$BUILD_NUMBER python -m pytest tests/ -v'
             }
         }
 
